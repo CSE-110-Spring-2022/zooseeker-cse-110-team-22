@@ -18,8 +18,8 @@ public class SearchTest {
 
     @Test
     public void assertString() {
-        String str = "app";
-        assertEquals("app", str);
+        String str = "application";
+        assertEquals("application", str);
     }
 
     @Test
