@@ -18,8 +18,8 @@ public class SearchTest {
 
     @Test
     public void assertString() {
-        String str = "app";
-        assertEquals("app", str);
+        String str = "application";
+        assertEquals("application", str);
     }
 
     @Test
@@ -27,6 +27,13 @@ public class SearchTest {
         Lifecycle.State state = Lifecycle.State.CREATED;
         assertNotEquals(state, Lifecycle.State.DESTROYED);
     }
+
+    @Test
+    public void newStateTest() {
+        Lifecycle.State state = Lifecycle.State.CREATED;
+        assertEquals(state, Lifecycle.State.CREATED);
+    }
+
 
 }
 
