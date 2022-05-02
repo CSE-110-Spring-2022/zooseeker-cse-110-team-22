@@ -2,7 +2,9 @@ package com.example.zooseeker;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
+import androidx.lifecycle.Lifecycle;
 import androidx.test.core.app.ActivityScenario;
 import org.junit.Test;
 
@@ -20,6 +22,12 @@ public class SearchTest {
         assertEquals("app", str);
     }
 
-}
+    @Test
+    public void basicStateTest() {
+        Lifecycle.State state = Lifecycle.State.CREATED;
+        assertNotEquals(state, Lifecycle.State.DESTROYED);
+    }
 
 }
+
+
