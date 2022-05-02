@@ -28,6 +28,13 @@ public class SearchTest {
         assertNotEquals(state, Lifecycle.State.DESTROYED);
     }
 
+    @Test
+    public void newStateTest() {
+        Lifecycle.State state = Lifecycle.State.CREATED;
+        assertEquals(state, Lifecycle.State.CREATED);
+    }
+
+
 }
 
 
