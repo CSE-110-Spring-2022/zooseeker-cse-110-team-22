@@ -4,6 +4,8 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverter;
+import androidx.room.TypeConverters;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -26,6 +28,8 @@ public class ZooExhibitsItem {
     @NonNull
     public String kind;
     public String name;
+
+    @TypeConverters({Converters.class})
     public List<String> tags;
 
     @Override

@@ -19,6 +19,10 @@ public interface ZooExhibitsItemDao {
     @Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `name`")
     List<ZooExhibitsItem> getAll();
 
+    //to get nodes which are only exhibits, type should be "exhibits"
+    @Query("SELECT * FROM `zoo_exhibits_items` WHERE `kind` =:type")
+    List<ZooExhibitsItem> getAllType(String type);
+
     @Update
     int update(ZooExhibitsItem zooExhibitsItem);
 
