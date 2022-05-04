@@ -1,5 +1,6 @@
 package com.example.zooseeker;
 
+import android.content.Context;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,6 +36,19 @@ public class MainActivity extends AppCompatActivity {
 
         // Add items to Array List
         mylist = new ArrayList<>();
+
+        //database creation, not filling database with json file?
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
+
+        //use getAllType when fixed, size currently 0
+        List<ZooExhibitsItem> exhibits = dao.getAll();
+        for(int i = 0; i < exhibits.size(); i++){
+            mylist.add(exhibits.get(i).name);
+            System.out.println(exhibits.get(i).name);
+        }
+
+        /*
         mylist.add("Camel");
         mylist.add("Toad");
         mylist.add("Tiger");
@@ -44,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         mylist.add("Giraffe");
         mylist.add("Panther");
 
+         */
         // Set adapter to ListView
         myAdapter
                 = new ArrayAdapter<String>(
