@@ -23,10 +23,22 @@ public class ZooGraph {
         this.eInfo = ZooData.loadEdgeInfoJSON(context,"sample_edge_info.json");
     }
 
+    /**
+     * Get path between start and goal nodes
+     * @param start
+     * @param goal
+     * @return path
+     */
     public GraphPath<String, IdentifiedWeightedEdge> getPath2(String start, String goal){
         return DijkstraShortestPath.findPathBetween(this.ZooG, start, goal);
     }
 
+
+    /**
+     * Returns list of directions given path between two nodes
+     * @param path path between two nodes
+     * @return List of directions
+     */
     public List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
         List<String> directions = new ArrayList<>();
 //        for (IdentifiedWeightedEdge e : path.getEdgeList()){
@@ -53,7 +65,7 @@ public class ZooGraph {
     }
 
     /**
-     *
+     * Use this function to get optimal path given list of exhibits to visit
      * @param vertexList List of exhibits to visit
      * @return Directions with shortest path between exhibits
      */
