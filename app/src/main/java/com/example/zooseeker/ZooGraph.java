@@ -29,16 +29,34 @@ public class ZooGraph {
 
     public List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
         List<String> directions = new ArrayList<>();
-        for (IdentifiedWeightedEdge e : path.getEdgeList()){
+//        for (IdentifiedWeightedEdge e : path.getEdgeList()){
+//            String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
+//                    this.ZooG.getEdgeWeight(e),
+//                    eInfo.get(e.getId()).street,
+//                    vInfo.get(this.ZooG.getEdgeSource(e).toString()).name,
+//                    vInfo.get(this.ZooG.getEdgeTarget(e).toString()).name);
+//            directions.add(direction);
+//        }
+        List<String> nodes = path.getVertexList();
+        for(int i=0;i<nodes.size()-1;i++) {
+            String curr = nodes.get(i);
+            String next = nodes.get(i+1);
+            IdentifiedWeightedEdge e = this.ZooG.getEdge(curr, next);
             String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
                     this.ZooG.getEdgeWeight(e),
                     eInfo.get(e.getId()).street,
-                    vInfo.get(this.ZooG.getEdgeSource(e).toString()).name,
-                    vInfo.get(this.ZooG.getEdgeTarget(e).toString()).name);
+                    curr,
+                    next);
             directions.add(direction);
         }
         return directions;
     }
+
+    /**
+     *
+     * @param vertexList List of exhibits to visit
+     * @return Directions with shortest path between exhibits
+     */
     public List<String> getShortestPath(List<String> vertexList){
         List<String> copy = new ArrayList<>(vertexList);
         List<String> directions_list = new ArrayList<>();
