@@ -4,7 +4,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
 import com.google.gson.Gson;
@@ -15,18 +14,19 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Entity(tableName = "zoo_exhibits_items")
 public class ZooExhibitsItem {
     // 1. Public fields.
-    @PrimaryKey(autoGenerate = true)
-    public long id;
+    @PrimaryKey
+    @NonNull
+    public String id;
 
     @NonNull
     public String kind;
+
+    @NonNull
     public String name;
 
     @TypeConverters({Converters.class})
@@ -45,7 +45,8 @@ public class ZooExhibitsItem {
     }
 
     // 2. Constructor matching fields above.
-    ZooExhibitsItem(String kind, String name, List<String> tags) {
+    ZooExhibitsItem(@NonNull String id, @NonNull String kind, @NonNull String name, List<String> tags) {
+        this.id = id;
         this.kind = kind;
         this.name = name;
         this.tags = tags;
@@ -59,7 +60,7 @@ public class ZooExhibitsItem {
             return gson.fromJson(reader, type);
         } catch (IOException e){
             e.printStackTrace();
-            return Collections.emptyList();
+            throw new RuntimeException(e.getMessage());
         }
     }
 }

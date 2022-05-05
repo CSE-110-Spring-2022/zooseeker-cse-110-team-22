@@ -32,7 +32,7 @@ public interface ZooExhibitsItemDao {
     @Insert
     List<Long> insertAll(List<ZooExhibitsItem> zooExhibitsItem);
 
-    //@Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `order`")
+    //@Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `type`")
     //LiveData<List<ZooExhibitsItem>> getAllLive();
 
 }

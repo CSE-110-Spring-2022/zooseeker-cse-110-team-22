@@ -13,8 +13,7 @@ public class Converters {
     // Store as JSON
     @TypeConverter
     public static List<String> fromJsonToList(String jsonStr) {
-        Type listType = new TypeToken<ArrayList<String>>() {
-        }.getType();
+        Type listType = new TypeToken<ArrayList<String>>() {}.getType();
         return new Gson().fromJson(jsonStr, listType);
     }
 
