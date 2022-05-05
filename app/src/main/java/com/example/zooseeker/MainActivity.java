@@ -1,6 +1,7 @@
 package com.example.zooseeker;
 
 //import android.util.Log;
+import android.annotation.SuppressLint;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         // initialise ListView with id
         ListView list1 = ((ListView) findViewById(R.id.listView1));
         ListView list2 = ((ListView) findViewById(R.id.listView2));
+        TextView counter = ((TextView) findViewById(R.id.numberCount));
 
         // Add items to Array List
         mylist = new ArrayList<>();
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         list2.setAdapter(myAdapter2);
         // Handling click for animals
         list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("SetTextI18n")
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 // Displays "added (animal")
@@ -71,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     planList.add(animal);
+                    counter.setText("List Size: " + planList.size());
                     Toast.makeText(MainActivity.this, "Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                     myAdapter2.notifyDataSetChanged();
                 }
