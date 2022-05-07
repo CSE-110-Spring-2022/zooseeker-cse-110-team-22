@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // initialise ListView with id
-        listView = findViewById(R.id.listView);
         ListView list1 = ((ListView) findViewById(R.id.listView1));
         ListView list2 = ((ListView) findViewById(R.id.listView2));
         TextView counter = ((TextView) findViewById(R.id.numberCount));
@@ -154,5 +153,9 @@ public class MainActivity extends AppCompatActivity {
                 });
 
         return super.onCreateOptionsMenu(menu);
+    }
+    public void openPlan(View view){
+        Intent intent = new Intent(this, PlanActivity.class);
+        startActivity(intent);
     }
 }
