@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ZooSeeker</string>
+    <string name="HELLO">asdfasdf</string>
+    <string name="my_list">My List</string>
 </resources>
