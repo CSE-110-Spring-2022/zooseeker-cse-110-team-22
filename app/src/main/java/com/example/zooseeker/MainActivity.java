@@ -1,6 +1,5 @@
 package com.example.zooseeker;
 
-
 //import android.util.Log;
 import android.annotation.SuppressLint;
 import android.view.Menu;
@@ -19,9 +18,6 @@ import androidx.core.view.MenuItemCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
