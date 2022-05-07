@@ -1,5 +1,6 @@
 package com.example.zooseeker;
 
+import android.content.Context;
 //import android.util.Log;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -16,6 +17,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.room.Room;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,11 +51,28 @@ public class MainActivity extends AppCompatActivity {
 
         // Add items to Array List
         mylist = new ArrayList<>();
-        mylist.add("gorillas");
-        mylist.add("gators");
-        mylist.add("lions");
-        mylist.add("elephant_odyssey");
-        mylist.add("arctic_foxes");
+
+        /*
+        mylist.add("Camel");
+        mylist.add("Toad");
+        mylist.add("Tiger");
+        mylist.add("Lion");
+        mylist.add("Elephant");
+        mylist.add("Cheetah");
+        mylist.add("Kangaroo");
+        mylist.add("Giraffe");
+        mylist.add("Panther");
+        */
+        //database, should load it in to arrayList
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
+
+        //attains only exhibits to put into UI View
+        List<ZooExhibitsItem> exhibits = dao.getAllType("exhibit");
+        for(int i = 0; i < exhibits.size(); i++){
+            mylist.add(exhibits.get(i).name);
+        }
+
         planList = new ArrayList<>();
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
@@ -135,7 +156,6 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
-
     public void openPlan(View view){
         Intent intent = new Intent(this, PlanActivity.class);
         startActivity(intent);

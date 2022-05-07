@@ -43,7 +43,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Button"
+            android:text="Get Directions!"
             android:onClick="openPlan"/>
 
         <!--    test comment -->
