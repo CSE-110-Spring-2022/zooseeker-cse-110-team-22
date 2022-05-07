@@ -1,13 +1,19 @@
 package com.example.zooseeker;
 
 import android.content.Context;
+//import android.util.Log;
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ArrayAdapter;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
@@ -25,9 +31,13 @@ public class MainActivity extends AppCompatActivity {
 
     // Define array adapter for ListView
     ArrayAdapter<String> myAdapter;
-
+    ArrayAdapter<String> myAdapter2;
     // Define array List for List View data
     ArrayList<String> mylist;
+    //Array list for selected exhibits
+    ArrayList<String> planList;
+
+//    AdapterView adapterView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +46,23 @@ public class MainActivity extends AppCompatActivity {
 
         // initialise ListView with id
         listView = findViewById(R.id.listView);
+        ListView list1 = ((ListView) findViewById(R.id.listView1));
+        ListView list2 = ((ListView) findViewById(R.id.listView2));
+        TextView counter = ((TextView) findViewById(R.id.numberCount));
 
         // Add items to Array List
         mylist = new ArrayList<>();
-
+        /*
+        mylist.add("Camel");
+        mylist.add("Toad");
+        mylist.add("Tiger");
+        mylist.add("Lion");
+        mylist.add("Elephant");
+        mylist.add("Cheetah");
+        mylist.add("Kangaroo");
+        mylist.add("Giraffe");
+        mylist.add("Panther");
+        */
         //database, should load it in to arrayList
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
@@ -49,14 +72,33 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < exhibits.size(); i++){
             mylist.add(exhibits.get(i).name);
         }
+        planList = new ArrayList<>();
+        // Initialize adapters
+        myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
+        myAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, planList);
+        //set adapters to respective lists
+        list1.setAdapter(myAdapter);
+        list2.setAdapter(myAdapter2);
+        // Handling click for animals
+        list1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @SuppressLint("SetTextI18n")
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-        // Set adapter to ListView
-        myAdapter
-                = new ArrayAdapter<String>(
-                this,
-                android.R.layout.simple_list_item_1,
-                mylist);
-        listView.setAdapter(myAdapter);
+                // Displays "added (animal")
+                String animal = ( (TextView) view ).getText().toString();
+                if(planList.contains(animal)){ // O(n) search LMFAO
+                    Toast.makeText(MainActivity.this, "Already Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    planList.add(animal);
+                    counter.setText("List Size: " + planList.size());
+                    Toast.makeText(MainActivity.this, "Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
+                    myAdapter2.notifyDataSetChanged();
+                }
+            }
+        });
+//        List<AnimalObject> animals = AnimalObject.loadJSON(this, "animals.json");
+//        Log.d("Animalasdfas", animals.toString());
     }
 
     @Override
@@ -80,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Override onQueryTextSubmit method
                     // which is call
-                    // when submit query is searched
+                    // when submitquery is searched
 
                     @Override
                     public boolean onQueryTextSubmit(String searchQuery) {
