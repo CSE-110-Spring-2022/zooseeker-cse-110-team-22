@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     // Define array List for List View data
     ArrayList<String> mylist;
     //Array list for selected exhibits
-    ArrayList<String> planList;
+    public static ArrayList<String> planList;
 
 //    AdapterView adapterView;
 
@@ -47,15 +47,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Add items to Array List
         mylist = new ArrayList<>();
-        mylist.add("Camel");
-        mylist.add("Toad");
-        mylist.add("Tiger");
-        mylist.add("Lion");
-        mylist.add("Elephant");
-        mylist.add("Cheetah");
-        mylist.add("Kangaroo");
-        mylist.add("Giraffe");
-        mylist.add("Panther");
+        mylist.add("gorillas");
+        mylist.add("gators");
+        mylist.add("lions");
+        mylist.add("elephant_odyssey");
+        mylist.add("arctic_foxes");
         planList = new ArrayList<>();
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
