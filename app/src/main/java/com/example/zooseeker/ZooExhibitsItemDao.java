@@ -1,5 +1,6 @@
 package com.example.zooseeker;
 //import androidx.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -13,8 +14,8 @@ public interface ZooExhibitsItemDao {
     @Insert
     long insert(ZooExhibitsItem zooExhibitsItem);
 
-    @Query("SELECT * FROM `zoo_exhibits_items` WHERE `id`=:id")
-    ZooExhibitsItem get(long id);
+    @Query("SELECT * FROM `zoo_exhibits_items` WHERE `number_assign`=:number_assign")
+    ZooExhibitsItem get(long number_assign);
 
     @Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `name`")
     List<ZooExhibitsItem> getAll();
@@ -29,10 +30,14 @@ public interface ZooExhibitsItemDao {
     @Delete
     int delete(ZooExhibitsItem zooExhibitsItem);
 
+    //deleting from SQL Database by name
+    @Query("DELETE FROM `zoo_exhibits_items` WHERE 'name' =:name")
+    void deleteByName(String name);
+
     @Insert
     List<Long> insertAll(List<ZooExhibitsItem> zooExhibitsItem);
 
-    //@Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `type`")
-    //LiveData<List<ZooExhibitsItem>> getAllLive();
+    @Query("SELECT * FROM `zoo_exhibits_items` ORDER BY `kind`")
+    LiveData<List<ZooExhibitsItem>> getAllLive();
 
 }

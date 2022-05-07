@@ -11,6 +11,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
+import androidx.room.Room;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // Override onQueryTextSubmit method
                     // which is call
-                    // when submitquery is searched
+                    // when submit query is searched
 
                     @Override
                     public boolean onQueryTextSubmit(String searchQuery) {

@@ -19,7 +19,9 @@ import java.util.List;
 @Entity(tableName = "zoo_exhibits_items")
 public class ZooExhibitsItem {
     // 1. Public fields.
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
+    public long number_assign;
+
     @NonNull
     public String id;
 
