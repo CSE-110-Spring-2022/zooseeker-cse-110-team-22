@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     planList.add(animal);
-                    counter.setText("List Size: " + planList.size());
+                    counter.setText("Exhibits to Visit: " + planList.size());
                     Toast.makeText(MainActivity.this, "Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                     myAdapter2.notifyDataSetChanged();
                 }
