@@ -2,6 +2,7 @@ package com.example.zooseeker;
 
 //import android.util.Log;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -139,4 +140,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public void openPlan(View view){
+        Intent intent = new Intent(this, PlanActivity.class);
+        startActivity(intent);
+    }
 }
