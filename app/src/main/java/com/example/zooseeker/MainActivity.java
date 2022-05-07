@@ -22,7 +22,9 @@ import androidx.test.core.app.ActivityScenario;
 import androidx.test.core.app.ApplicationProvider;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> mylist;
     //Array list for selected exhibits
     public static ArrayList<String> planList;
+    //Mapping names to node ids for graph algorithm
+    public static Map<String, String> nameToId;
 
 //    AdapterView adapterView;
 
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Add items to Array List
         mylist = new ArrayList<>();
+        nameToId = new HashMap<String, String>();
 
         /*
         mylist.add("Camel");
@@ -71,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         List<ZooExhibitsItem> exhibits = dao.getAllType("exhibit");
         for(int i = 0; i < exhibits.size(); i++){
             mylist.add(exhibits.get(i).name);
+            nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
         }
 
         planList = new ArrayList<>();
