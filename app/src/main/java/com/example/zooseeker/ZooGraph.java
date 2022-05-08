@@ -54,13 +54,14 @@ public class ZooGraph {
             String curr = nodes.get(i);
             String next = nodes.get(i+1);
             IdentifiedWeightedEdge e = this.ZooG.getEdge(curr, next);
-            String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
+            String direction = String.format("Walk %.0f meters along %s from %s to %s.\n",
                     this.ZooG.getEdgeWeight(e),
                     eInfo.get(e.getId()).street,
                     curr,
                     next);
             directions.add(direction);
         }
+        directions.add(String.format("You have arrived at %s.\n", path.getEndVertex()));
         return directions;
     }
 

@@ -7,6 +7,7 @@
     tools:context=".PlanActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="394dp"
         android:layout_height="530dp"
         android:orientation="vertical"
@@ -23,4 +24,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/getDirections"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Get Directions"
+        android:onClick="openDirections"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>
