@@ -30,9 +30,9 @@ public interface ZooExhibitsItemDao {
     @Delete
     int delete(ZooExhibitsItem zooExhibitsItem);
 
-    //deleting from SQL Database by name
-    @Query("DELETE FROM `zoo_exhibits_items` WHERE 'name' =:name")
-    void deleteByName(String name);
+    //nuke deleting from SQL Database
+    @Query("DELETE FROM `zoo_exhibits_items`")
+    void deleteAll();
 
     @Insert
     List<Long> insertAll(List<ZooExhibitsItem> zooExhibitsItem);

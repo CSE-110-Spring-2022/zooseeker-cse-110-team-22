@@ -17,6 +17,11 @@ public abstract class ZooDatabase extends RoomDatabase {
 
     public abstract ZooExhibitsItemDao zooExhibitsItemDao();
 
+    /**
+     * Use method to get singleton from database class
+     * @param context Current state of application
+     * @return database of zoo exhibits
+     */
     public synchronized static ZooDatabase getSingleton(Context context){
         if (singleton == null){
             singleton = ZooDatabase.makeDatabase(context);
@@ -24,6 +29,11 @@ public abstract class ZooDatabase extends RoomDatabase {
         return singleton;
     }
 
+    /**
+     * Use method to generate database from given node file
+     * @param context Current state of application
+     * @return database of zoo exhibits
+     */
     private static ZooDatabase makeDatabase(Context context){
         return Room.databaseBuilder(context, ZooDatabase.class, "zoo_app.db")
                 .allowMainThreadQueries().addCallback(new Callback() {

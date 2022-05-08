@@ -53,12 +53,10 @@ public class ZooDatabaseTest {
 
             dao.insertAll(zooEx);
 
-            for(ZooExhibitsItem zooItem: zooEx){
-                dao.deleteByName(zooItem.name);
-            }
+            dao.deleteAll();
 
             //checks that database has no values after deletion
-            assert dao.getAll().size() != 0;
+            assert dao.getAll().size() == 0;
             db.close();
         });
     }

@@ -1,5 +1,6 @@
 package com.example.zooseeker;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import android.content.Context;
@@ -44,6 +45,23 @@ public class ZooGraphUnitTest {
         String start = "entrance_exit_gate";
         String goal = "elephant_odyssey";
         GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
+        assertNotNull(path);
+    }
+
+    @Test
+    public void testGetPath2EdgeWeight(){
+        String start = "entrance_exit_gate";
+        String goal = "entrance_plaza";
+        GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
+        assertEquals(10.0, path.getWeight(), 0.05);
+    }
+
+    @Test
+    public void testGetDirectionsFromPath2(){
+        String start = "entrance_exit_gate";
+        String goal = "gators";
+        GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
+        List<String> twoNodesDirection = this.testG.getDirectionsFromPath2(path);
         assertNotNull(path);
     }
 
