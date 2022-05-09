@@ -1,7 +1,5 @@
 package com.example.zooseeker;
 
-import android.content.Context;
-//import android.util.Log;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.Menu;
@@ -17,9 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
-import androidx.room.Room;
-import androidx.test.core.app.ActivityScenario;
-import androidx.test.core.app.ApplicationProvider;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,9 +22,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
-
-    // List View object
-    ListView listView;
 
     // Define array adapter for ListView
     ArrayAdapter<String> myAdapter;
@@ -57,17 +49,6 @@ public class MainActivity extends AppCompatActivity {
         mylist = new ArrayList<>();
         nameToId = new HashMap<String, String>();
 
-        /*
-        mylist.add("Camel");
-        mylist.add("Toad");
-        mylist.add("Tiger");
-        mylist.add("Lion");
-        mylist.add("Elephant");
-        mylist.add("Cheetah");
-        mylist.add("Kangaroo");
-        mylist.add("Giraffe");
-        mylist.add("Panther");
-        */
         //database, should load it in to arrayList
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
@@ -93,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
                 // Displays "added (animal")
                 String animal = ( (TextView) view ).getText().toString();
-                if(planList.contains(animal)){ // O(n) search LMFAO
+                if(planList.contains(animal)){ // O(n) search
                     Toast.makeText(MainActivity.this, "Already Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -104,8 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-//        List<AnimalObject> animals = AnimalObject.loadJSON(this, "animals.json");
-//        Log.d("Animalasdfas", animals.toString());
+
     }
 
     @Override
