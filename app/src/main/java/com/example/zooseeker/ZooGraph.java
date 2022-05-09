@@ -25,9 +25,9 @@ public class ZooGraph {
 
     /**
      * Get path between start and goal nodes
-     * @param start
-     * @param goal
-     * @return path
+     * @param start beginning node
+     * @param goal ending node
+     * @return path between the two
      */
     public GraphPath<String, IdentifiedWeightedEdge> getPath2(String start, String goal){
         return DijkstraShortestPath.findPathBetween(this.ZooG, start, goal);
@@ -41,14 +41,6 @@ public class ZooGraph {
      */
     public List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
         List<String> directions = new ArrayList<>();
-//        for (IdentifiedWeightedEdge e : path.getEdgeList()){
-//            String direction = String.format("Walk %.0f meters along %s from '%s' to '%s'.\n",
-//                    this.ZooG.getEdgeWeight(e),
-//                    eInfo.get(e.getId()).street,
-//                    vInfo.get(this.ZooG.getEdgeSource(e).toString()).name,
-//                    vInfo.get(this.ZooG.getEdgeTarget(e).toString()).name);
-//            directions.add(direction);
-//        }
         List<String> nodes = path.getVertexList();
         for(int i=0;i<nodes.size()-1;i++) {
             String curr = nodes.get(i);
@@ -93,7 +85,7 @@ public class ZooGraph {
             copy.remove(curr_vertex);
             directions_list.addAll(getDirectionsFromPath2(path_leg));
         }
-        return  directions_list;
+        return directions_list;
     }
 
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @RunWith(AndroidJUnit4.class)
 public class ZooDatabaseTest {
 
+    //tests that database is properly initialized
     @Test
     public void testSeedDatabase() {
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
@@ -37,6 +38,7 @@ public class ZooDatabaseTest {
         });
     }
 
+    ////tests that values in database can be deleted
     @Test
     public void testDeleteValuesDatabase() {
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);

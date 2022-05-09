@@ -36,6 +36,7 @@ public class ZooExhibitsItemDaoTest {
         db.close();
     }
 
+    //tests that items can be inserted in dao
     @Test
     public void testInsert() {
         ZooExhibitsItem item1 = new ZooExhibitsItem("lion", "exhibit", "lion", null);
@@ -47,6 +48,7 @@ public class ZooExhibitsItemDaoTest {
         assertNotEquals(identification1, identification2);
     }
 
+    //tests that items can be gotten from dao
     @Test
     public void testGet() {
         ZooExhibitsItem insertedItem = new ZooExhibitsItem("gator","exhibit", "gator", null);
@@ -59,6 +61,7 @@ public class ZooExhibitsItemDaoTest {
         assertEquals(insertedItem.tags, item.tags);
     }
 
+    //tests that item can be updated in dao
     @Test
     public void testUpdate() {
         ZooExhibitsItem item = new ZooExhibitsItem("giraffe","exhibit", "giraffe", null);
@@ -74,6 +77,7 @@ public class ZooExhibitsItemDaoTest {
         assertEquals("dead_giraffe", item.name);
     }
 
+    //tests that item can be deleted in dao
     @Test
     public void testDelete() {
         ZooExhibitsItem item = new ZooExhibitsItem("gorilla","exhibit", "gorilla", null);

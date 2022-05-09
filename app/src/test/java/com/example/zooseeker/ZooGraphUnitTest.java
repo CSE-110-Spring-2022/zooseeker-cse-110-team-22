@@ -28,11 +28,13 @@ public class ZooGraphUnitTest {
         this.testG = new ZooGraph(context);
     }
 
+    //tests that graph exists
     @Test
     public void assertGraphExists(){
         assertNotNull(this.testG);
     }
 
+    //testing that graph components are properly initialized
     @Test
     public void assertGraphComponentsExist(){
         assertNotNull(this.testG.ZooG);
@@ -40,6 +42,7 @@ public class ZooGraphUnitTest {
         assertNotNull(this.testG.vInfo);
     }
 
+    //testing that getPath2 returns an appropriate GraphPath
     @Test
     public void testGetPath2(){
         String start = "entrance_exit_gate";
@@ -48,6 +51,7 @@ public class ZooGraphUnitTest {
         assertNotNull(path);
     }
 
+    //testing that getPath2's returned GraphPath has correct edge weight
     @Test
     public void testGetPath2EdgeWeight(){
         String start = "entrance_exit_gate";
@@ -56,6 +60,7 @@ public class ZooGraphUnitTest {
         assertEquals(10.0, path.getWeight(), 0.05);
     }
 
+    //testing that getDirectionsFromPath2 returns a proper String list
     @Test
     public void testGetDirectionsFromPath2(){
         String start = "entrance_exit_gate";
@@ -65,6 +70,7 @@ public class ZooGraphUnitTest {
         assertNotNull(path);
     }
 
+    //testing that getShortestPath on an arbitrary list will return some non-null output
     @Test
     public void testGetShortestPath(){
         List<String> animal_list = new ArrayList<>();

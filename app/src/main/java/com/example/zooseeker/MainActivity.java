@@ -33,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
     //Mapping names to node ids for graph algorithm
     public static Map<String, String> nameToId;
 
-//    AdapterView adapterView;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
