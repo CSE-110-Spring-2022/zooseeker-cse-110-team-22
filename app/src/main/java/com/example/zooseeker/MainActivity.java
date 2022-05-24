@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+    //checks for planning
     public void openPlan(View view){
         Intent intent = new Intent(this, PlanActivity.class);
         startActivity(intent);
