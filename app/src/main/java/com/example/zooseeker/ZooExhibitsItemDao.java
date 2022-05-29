@@ -10,6 +10,7 @@ import androidx.room.Update;
 import java.util.List;
 
 @Dao
+//to be split into two
 public interface ZooExhibitsItemDao {
     @Insert
     long insert(ZooExhibitsItem zooExhibitsItem);

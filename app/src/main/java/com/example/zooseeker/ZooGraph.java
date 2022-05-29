@@ -16,11 +16,12 @@ public class ZooGraph {
     public Graph<String, IdentifiedWeightedEdge> ZooG;
 
     public ZooGraph(Context context){
-        // 1. Load the graph...
-         this.ZooG = ZooData.loadZooGraphJSON(context,"sample_zoo_graph.json");
-        // 2. Load the information about our nodes and edges...
-        this.vInfo = ZooData.loadVertexInfoJSON(context,"sample_node_info.json");
-        this.eInfo = ZooData.loadEdgeInfoJSON(context,"sample_edge_info.json");
+        // 1. Load the graph... using new data
+        this.ZooG = ZooData.loadZooGraphJSON(context,"zoo_graph.json");
+        // 2. Load the information about our nodes and edges... using new data
+        //problem here
+        this.vInfo = ZooData.loadVertexInfoJSON(context,"exhibit_info.json");
+        this.eInfo = ZooData.loadEdgeInfoJSON(context,"trail_info.json");
     }
 
     /**

@@ -18,6 +18,8 @@ import java.util.List;
 
 @Entity(tableName = "zoo_exhibits_items")
 public class ZooExhibitsItem {
+
+    //to be thrown out, replaced with exhibit and trail
     // 1. Public fields.
     @PrimaryKey(autoGenerate = true)
     public long number_assign;

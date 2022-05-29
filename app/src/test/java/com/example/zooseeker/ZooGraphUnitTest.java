@@ -46,7 +46,7 @@ public class ZooGraphUnitTest {
     @Test
     public void testGetPath2(){
         String start = "entrance_exit_gate";
-        String goal = "elephant_odyssey";
+        String goal = "flamingo";
         GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
         assertNotNull(path);
     }

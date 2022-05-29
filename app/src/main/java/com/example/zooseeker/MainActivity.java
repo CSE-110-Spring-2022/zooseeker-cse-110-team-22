@@ -16,6 +16,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mylist = new ArrayList<>();
         nameToId = new HashMap<String, String>();
 
+        /*
         //database, should load it in to arrayList
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
@@ -57,7 +62,27 @@ public class MainActivity extends AppCompatActivity {
             mylist.add(exhibits.get(i).name);
             nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
         }
+         */
 
+        //use database for persistence of user chosen exhibits list
+
+        Reader exhibitsReader = null;
+        try {
+            exhibitsReader = new InputStreamReader(this.getAssets().open("exhibit_info.json"));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to load data");
+        }
+
+        //loading exhibits
+        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
+
+        for(int i = 0; i < exhibits.size(); i++){
+            //only attain exhibits
+            if (exhibits.get(i).isExhibit()){
+                mylist.add(exhibits.get(i).name);
+                nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
+            }
+        }
         planList = new ArrayList<>();
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);

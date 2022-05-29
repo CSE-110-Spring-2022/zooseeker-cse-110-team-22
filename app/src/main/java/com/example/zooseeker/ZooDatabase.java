@@ -11,6 +11,8 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.List;
 import java.util.concurrent.Executors;
 
+
+//to be edited w/ trail and exhibit
 @Database(entities = {ZooExhibitsItem.class}, version = 1)
 public abstract class ZooDatabase extends RoomDatabase {
     private static ZooDatabase singleton = null;
@@ -42,7 +44,7 @@ public abstract class ZooDatabase extends RoomDatabase {
                         super.onCreate(db);
                         Executors.newSingleThreadScheduledExecutor().execute(() -> {
                             List<ZooExhibitsItem> zooEx = ZooExhibitsItem
-                                    .loadJSON(context, "sample_node_info.json");
+                                    .loadJSON(context, "exhibit_info.json");
                             getSingleton(context).zooExhibitsItemDao().insertAll(zooEx);
                         });
                     }

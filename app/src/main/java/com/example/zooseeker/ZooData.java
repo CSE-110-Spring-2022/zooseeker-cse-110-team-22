@@ -2,6 +2,10 @@ package com.example.zooseeker;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.room.ColumnInfo;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.reflect.TypeToken;
@@ -27,13 +31,19 @@ public class ZooData {
             // from the strings in our JSON to this Enum.
             @SerializedName("gate") GATE,
             @SerializedName("exhibit") EXHIBIT,
+
+            //for new addition of exhibit groups
+            @SerializedName("exhibit_group") EXHIBIT_GROUP,
             @SerializedName("intersection") INTERSECTION
         }
-
         public String id;
         public Kind kind;
         public String name;
         public List<String> tags;
+
+        //location coordinates
+        public Double lat;
+        public Double lng;
     }
 
     public static class EdgeInfo {
