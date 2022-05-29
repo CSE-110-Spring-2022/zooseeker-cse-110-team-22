@@ -80,7 +80,12 @@ public class MainActivity extends AppCompatActivity {
             //only attain exhibits
             if (exhibits.get(i).isExhibit()){
                 mylist.add(exhibits.get(i).name);
-                nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
+                if (exhibits.get(i).hasGroup()){
+                    nameToId.put(exhibits.get(i).name, exhibits.get(i).groupId);
+                }
+                else {
+                    nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
+                }
             }
         }
         planList = new ArrayList<>();
