@@ -46,6 +46,11 @@
             android:text="Get Plan!"
             android:onClick="openPlan"/>
 
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <!--    test comment -->
 
     </LinearLayout>

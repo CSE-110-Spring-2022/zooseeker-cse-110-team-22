@@ -1,7 +1,12 @@
 package com.example.zooseeker;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,6 +18,8 @@ import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
@@ -37,6 +44,9 @@ public class MainActivity extends AppCompatActivity {
     //Mapping names to node ids for graph algorithm
     public static Map<String, String> nameToId;
 
+    private final PermissionChecker permissionChecker = new PermissionChecker(this);
+
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         ListView list1 = ((ListView) findViewById(R.id.listView1));
         ListView list2 = ((ListView) findViewById(R.id.listView2));
         TextView counter = ((TextView) findViewById(R.id.numberCount));
+        TextView loc = ((TextView) findViewById(R.id.location));
 
         // Add items to Array List
         mylist = new ArrayList<>();
@@ -74,15 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //loading exhibits
-        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
-
-        for(int i = 0; i < exhibits.size(); i++){
-            //only attain exhibits
-            if (exhibits.get(i).isExhibit()){
-                mylist.add(exhibits.get(i).name);
-                nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
-            }
-        }
+        setUpExhibitList(exhibitsReader);
         planList = new ArrayList<>();
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
@@ -108,7 +111,37 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        /* Permissions Setup */
+        if (permissionChecker.ensurePermissions()) return;
 
+        var provider = LocationManager.GPS_PROVIDER;
+        var locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        var locationListner = new LocationListener() {
+            @Override
+            public void onLocationChanged(@NonNull Location location) {
+                Log.d("LAB7", String.format("Location changed: %s", location));
+                loc.setText(location.toString());
+
+            }
+        };
+        locationManager.requestLocationUpdates(provider, 0, 0f, locationListner);
+    }
+
+    private void setUpExhibitList(Reader exhibitsReader) {
+        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
+
+        for(int i = 0; i < exhibits.size(); i++){
+            //only attain exhibits
+            if (exhibits.get(i).isExhibit()){
+                mylist.add(exhibits.get(i).name);
+                if (exhibits.get(i).hasGroup()){
+                    nameToId.put(exhibits.get(i).name, exhibits.get(i).groupId);
+                }
+                else {
+                    nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
+                }
+            }
+        }
     }
 
     @Override

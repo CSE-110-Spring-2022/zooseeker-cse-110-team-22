@@ -55,16 +55,16 @@ public class ZooGraphUnitTest {
     @Test
     public void testGetPath2EdgeWeight(){
         String start = "entrance_exit_gate";
-        String goal = "entrance_plaza";
+        String goal = "intxn_front_treetops";
         GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
-        assertEquals(10.0, path.getWeight(), 0.05);
+        assertEquals(1100.0, path.getWeight(), 0.05);
     }
 
     //testing that getDirectionsFromPath2 returns a proper String list
     @Test
     public void testGetDirectionsFromPath2(){
         String start = "entrance_exit_gate";
-        String goal = "gators";
+        String goal = "hippo";
         GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
         List<String> twoNodesDirection = this.testG.getDirectionsFromPath2(path);
         assertNotNull(path);
@@ -74,9 +74,9 @@ public class ZooGraphUnitTest {
     @Test
     public void testGetShortestPath(){
         List<String> animal_list = new ArrayList<>();
-        animal_list.add("elephant_odyssey");
-        animal_list.add("gorillas");
-        animal_list.add("gators");
+        animal_list.add("koi");
+        animal_list.add("gorilla");
+        animal_list.add("capuchin");
 
         List<String> output = this.testG.getShortestPath(animal_list);
         Log.d("out1", output.get(0));
