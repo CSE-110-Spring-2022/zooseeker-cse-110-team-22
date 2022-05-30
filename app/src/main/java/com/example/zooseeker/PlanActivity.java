@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 public class PlanActivity extends AppCompatActivity {
     ArrayAdapter<String> myAdapter;
+    public static List<String> exhibit_order;
     public static List<String> direction_list;
 
     @Override
