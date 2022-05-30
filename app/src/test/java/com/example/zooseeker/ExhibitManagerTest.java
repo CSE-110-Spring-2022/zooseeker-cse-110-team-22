@@ -40,7 +40,7 @@ public class ExhibitManagerTest {
         double mockLat = 32.72109826903826;
         double mockLng = -117.15952052282296;
         String name = exhibitManager.getClosest(mockLat, mockLng).name;
-        System.out.println(name);
+        assertEquals(name, "Koi Fish");
 
     }
 }
