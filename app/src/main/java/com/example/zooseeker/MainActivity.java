@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         //database, should load it in to arrayList
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
-
         //attains only exhibits to put into UI View
         List<ZooExhibitsItem> exhibits = dao.getAllType("exhibit");
         for(int i = 0; i < exhibits.size(); i++){
