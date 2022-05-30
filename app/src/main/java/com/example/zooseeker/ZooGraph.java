@@ -1,19 +1,24 @@
 package com.example.zooseeker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.location.Location;
+import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ZooGraph {
     public Map<String, ZooData.VertexInfo> vInfo;
-    public Map<String, ZooData.EdgeInfo> eInfo;
-    public Graph<String, IdentifiedWeightedEdge> ZooG;
+    public static Map<String, ZooData.EdgeInfo> eInfo;
+    public static Graph<String, IdentifiedWeightedEdge> ZooG;
 
     public ZooGraph(Context context){
         // 1. Load the graph... using new data
@@ -30,25 +35,25 @@ public class ZooGraph {
      * @param goal ending node
      * @return path between the two
      */
-    public GraphPath<String, IdentifiedWeightedEdge> getPath2(String start, String goal){
-        return DijkstraShortestPath.findPathBetween(this.ZooG, start, goal);
+    public static GraphPath<String, IdentifiedWeightedEdge> getPath2(String start, String goal){
+        return DijkstraShortestPath.findPathBetween(ZooG, start, goal);
     }
 
 
     /**
      * Returns list of directions given path between two nodes
-     * @param path path between two nodes
+     *
      * @return List of directions
      */
-    public List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
+    public static List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
         List<String> directions = new ArrayList<>();
         List<String> nodes = path.getVertexList();
         for(int i=0;i<nodes.size()-1;i++) {
             String curr = nodes.get(i);
             String next = nodes.get(i+1);
-            IdentifiedWeightedEdge e = this.ZooG.getEdge(curr, next);
+            IdentifiedWeightedEdge e = ZooG.getEdge(curr, next);
             String direction = String.format("Walk %.0f meters along %s from %s to %s.\n",
-                    this.ZooG.getEdgeWeight(e),
+                    ZooG.getEdgeWeight(e),
                     eInfo.get(e.getId()).street,
                     curr,
                     next);
@@ -57,6 +62,21 @@ public class ZooGraph {
         directions.add(String.format("You have arrived at %s.\n", path.getEndVertex()));
         return directions;
     }
+//    public List<String> getExhibitOrders(GraphPath<String, IdentifiedWeightedEdge> path) {
+//        List<String> order = new ArrayList<>();
+//        List<String> nodes = path.getVertexList();
+//        for(int i = 0; i < nodes.size()- 1; i++){
+//            String next = nodes.get(i + 1);
+//            order.add(next);
+//        }
+//        return order;
+//    }
+        //updated version of GetDirectionsFromPath2
+        public static List<String> getDirectionsToExhibit(double lat, double lng, String end){
+            var start = MainActivity.exhibitManager.getClosest(lat, lng).id;
+            var cur_path = getPath2(start, end);
+            return getDirectionsFromPath2(cur_path);
+        }
 
     /**
      * Gets the order of the exhibits you need to visit.
@@ -125,7 +145,8 @@ public class ZooGraph {
             }
             curr_vertex = next_vertex;
             copy.remove(curr_vertex);
-            directions_list.addAll(getDirectionsFromPath2(path_leg));
+            directions_list.add(path_leg.getEndVertex());
+
         }
         return directions_list;
     }

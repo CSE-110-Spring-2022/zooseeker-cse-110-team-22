@@ -15,7 +15,9 @@ import java.util.stream.Collectors;
 
 public class PlanActivity extends AppCompatActivity {
     ArrayAdapter<String> myAdapter;
+<<<<<<< HEAD
     public static List<String> route_plan_summary;
+    public static List<String> exhibit_order;
     public static List<String> direction_list;
 
     @Override

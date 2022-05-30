@@ -42,10 +42,15 @@ public class MainActivity extends AppCompatActivity {
     private final PermissionChecker permissionChecker = new PermissionChecker(this);
 
     //LocationModel
-    private static LocationModel locationModel;
+    public static LocationModel locationModel;
 
     //ExhibitManager
     public static ExhibitManager exhibitManager;
+
+    //Current Location
+    public static Location current;
+    public static final double Zoolat = 32.8801;
+    public static final double Zoolong = -117.2340;
 
     @SuppressLint("MissingPermission")
     @Override
@@ -118,8 +123,10 @@ public class MainActivity extends AppCompatActivity {
         var locationListner = new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
+                current = location;
                 Log.d("LAB7", String.format("Location changed: %s", location));
-                loc.setText(exhibitManager.getClosest(location).name);
+                loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
+                locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
 
             }
         };
