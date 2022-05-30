@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,8 @@ public class PlanActivity extends AppCompatActivity {
 
         //Convert list of names to list of ids
         List<String> id_list = MainActivity.planList.stream()
-                .map(name -> MainActivity.nameToId.get(name))
+                .map(name -> ExhibitManager.nameToExhibit.get(name))
+                .map(exhibit -> exhibit.hasGroup() ? exhibit.groupId : exhibit.id)
                 .collect(Collectors.toList());
 
         //Get list of directions

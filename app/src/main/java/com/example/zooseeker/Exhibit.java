@@ -99,6 +99,12 @@ public class Exhibit {
         return groupId != null;
     }
 
+    public double getDistance(double t_lat, double t_lng){
+        var dLat = t_lat - this.lat;
+        var dLng = t_lng - this.lng;
+        return Math.sqrt(Math.pow(dLat, 2) + Math.pow(dLng, 2));
+    }
+
     public Exhibit(@NonNull String id,
                    @Nullable String groupId,
                    @NonNull Kind kind,
