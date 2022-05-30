@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private final PermissionChecker permissionChecker = new PermissionChecker(this);
 
     //LocationModel
-    private static LocationModel locationModel;
+    public static LocationModel locationModel;
 
     //ExhibitManager
     public static ExhibitManager exhibitManager;
@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 current = location;
                 Log.d("LAB7", String.format("Location changed: %s", location));
                 loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
+                locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
 
             }
         };
