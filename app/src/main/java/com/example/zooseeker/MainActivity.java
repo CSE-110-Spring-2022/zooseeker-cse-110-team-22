@@ -43,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
 
     //LocationModel
     public static LocationModel locationModel;
+    //Mock Loacation
+    public boolean mockingEnabled = true;
+    public double mockLat = 32.72109826903826;
+    public double mockLng = -117.15952052282296;
 
     //ExhibitManager
     public static ExhibitManager exhibitManager;
@@ -121,17 +125,25 @@ public class MainActivity extends AppCompatActivity {
         if (permissionChecker.ensurePermissions()) return;
 
         locationModel = new LocationModel(this);
-        var locationListner = new LocationListener() {
-            @Override
-            public void onLocationChanged(@NonNull Location location) {
-                current = location;
-                Log.d("LAB7", String.format("Location changed: %s", location));
-                loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
-                locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
+        if (! mockingEnabled)
+        {
+            var locationListner = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    current = location;
+                    Log.d("LAB7", String.format("Location changed: %s", location));
+                    loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
+                    locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
 
-            }
-        };
-        locationModel.requestLocationUpdates(locationListner);
+                }
+            };
+            locationModel.requestLocationUpdates(locationListner);
+        }
+        else{
+            Log.d("Mocking Enabled", "Mocking Enabled");
+            locationModel.setLastKnown(mockLat, mockLng);
+            loc.setText(exhibitManager.getClosest(mockLat, mockLng).name);
+        }
     }
 
 

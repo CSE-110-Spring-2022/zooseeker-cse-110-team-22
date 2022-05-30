@@ -1,8 +1,10 @@
 package com.example.zooseeker;
 
 import android.location.Location;
+import android.util.Log;
 
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +12,18 @@ import java.util.Map;
 public class ExhibitManager {
 
     //Mapping names to node ids for graph algorithm
-    public static Map<String, Exhibit> nameToExhibit;
+    public static Map<String, Exhibit> nameToExhibit = new HashMap<>();
+
+
+    public ExhibitManager(Reader exhibitsReader) {
+        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
+
+
+        for(int i = 0; i < exhibits.size(); i++){
+            //only attain exhibits
+            nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));
+        }
+    }
 
     public ExhibitManager(Reader exhibitsReader, List mylist) {
         List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
@@ -43,6 +56,8 @@ public class ExhibitManager {
 
                 if (curr_dist < smallest_dist){
                     closest_exhibit = exhibit;
+                    smallest_dist = curr_dist;
+                    Log.d("Closest", String.format("exhibit: %s dist: %f", exhibit.name, curr_dist));
                 }
             }
 
