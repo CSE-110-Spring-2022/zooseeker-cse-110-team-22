@@ -13,6 +13,7 @@ public class ExhibitManager {
 
     //Mapping names to node ids for graph algorithm
     public static Map<String, Exhibit> nameToExhibit = new HashMap<>();
+    public static Map<String, Exhibit> idToExhibit = new HashMap<>();
 
 
     public ExhibitManager(Reader exhibitsReader) {
@@ -22,6 +23,7 @@ public class ExhibitManager {
         for(int i = 0; i < exhibits.size(); i++){
             //only attain exhibits
             nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));
+            idToExhibit.put(exhibits.get(i).id, exhibits.get(i));
         }
     }
 
@@ -34,6 +36,7 @@ public class ExhibitManager {
                 mylist.add(exhibits.get(i).name);
             }
             nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));
+            idToExhibit.put(exhibits.get(i).id, exhibits.get(i));
         }
     }
 

@@ -36,7 +36,7 @@ public class ExhibitManagerTest {
         exhibitManager = new ExhibitManager(exhibitsReader);
     }
     @Test
-    public void getClosest() {
+    public void testClosest() {
         double mockLat = 32.72109826903826;
         double mockLng = -117.15952052282296;
         String name = exhibitManager.getClosest(mockLat, mockLng).name;
