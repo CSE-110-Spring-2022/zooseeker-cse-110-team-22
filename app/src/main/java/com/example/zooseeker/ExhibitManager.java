@@ -24,9 +24,9 @@ public class ExhibitManager {
         }
     }
 
-    Exhibit getClosest(Location loc){
-        double lat = loc.getLatitude();
-        double lng = loc.getLongitude();
+    Exhibit getClosest(double lat, double lng){
+//        double lat = loc.getLatitude();
+//        double lng = loc.getLongitude();
         double smallest_dist = Double.MAX_VALUE;
         Exhibit closest_exhibit = null;
 
