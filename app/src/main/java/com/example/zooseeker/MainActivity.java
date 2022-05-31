@@ -2,6 +2,9 @@ package com.example.zooseeker;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,17 +16,17 @@ import android.widget.ArrayAdapter;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.MenuItemCompat;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,9 +37,27 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> mylist;
     //Array list for selected exhibits
     public static ArrayList<String> planList;
-    //Mapping names to node ids for graph algorithm
-    public static Map<String, String> nameToId;
 
+
+    //PermissionChecker
+    private final PermissionChecker permissionChecker = new PermissionChecker(this);
+
+    //LocationModel
+    public static LocationModel locationModel;
+    //Mock Loacation
+    public boolean mockingEnabled = true;
+    public double mockLat = 32.72109826903826;
+    public double mockLng = -117.15952052282296;
+
+    //ExhibitManager
+    public static ExhibitManager exhibitManager;
+
+    //Current Location
+    public static Location current;
+    public static final double Zoolat = 32.8801;
+    public static final double Zoolong = -117.2340;
+
+    @SuppressLint("MissingPermission")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
         ListView list1 = ((ListView) findViewById(R.id.listView1));
         ListView list2 = ((ListView) findViewById(R.id.listView2));
         TextView counter = ((TextView) findViewById(R.id.numberCount));
+        TextView loc = ((TextView) findViewById(R.id.location));
 
         // Add items to Array List
         mylist = new ArrayList<>();
-        nameToId = new HashMap<String, String>();
+        ExhibitManager.nameToExhibit = new HashMap<String, Exhibit>();
 
         /*
         //database, should load it in to arrayList
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ZooExhibitsItemDao dao = zooNodes.zooExhibitsItemDao();
-
         //attains only exhibits to put into UI View
         List<ZooExhibitsItem> exhibits = dao.getAllType("exhibit");
         for(int i = 0; i < exhibits.size(); i++){
@@ -72,32 +93,23 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException("Unable to load data");
         }
-
         //loading exhibits
         List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
-
-        for(int i = 0; i < exhibits.size(); i++){
-            //only attain exhibits
-            if (exhibits.get(i).isExhibit()){
-                mylist.add(exhibits.get(i).name);
-                if (exhibits.get(i).hasGroup()){
-                    nameToId.put(exhibits.get(i).name, exhibits.get(i).groupId);
-                }
-                else {
-                    nameToId.put(exhibits.get(i).name, exhibits.get(i).id);
-                }
-            }
-        }
-
 
         ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
         ExhibitDao dao = zooNodes.exhibitsDao();
 
         //to edit later in persisting saved trail
         //TrailDao tdao = zooNodes.trailsDao();
-
         List<Exhibit> planListLoader = dao.getAll();
 
+        Reader exhibitsReader2 = null;
+        try {
+            exhibitsReader2 = new InputStreamReader(this.getAssets().open("exhibit_info.json"));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to load data");
+        }
+        exhibitManager = new ExhibitManager(exhibitsReader2, mylist);
         planList = new ArrayList<>();
 
         //Get list of exhibits from dao
@@ -135,8 +147,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        /* Permissions Setup */
+        if (permissionChecker.ensurePermissions()) return;
 
+        locationModel = new LocationModel(this);
+        if (! mockingEnabled)
+        {
+            var locationListner = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    current = location;
+                    Log.d("LAB7", String.format("Location changed: %s", location));
+                    loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
+                    locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
+
+                }
+            };
+            locationModel.requestLocationUpdates(locationListner);
+        }
+        else{
+            Log.d("Mocking Enabled", "Mocking Enabled");
+            locationModel.setLastKnown(mockLat, mockLng);
+            loc.setText(exhibitManager.getClosest(mockLat, mockLng).name);
+        }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
