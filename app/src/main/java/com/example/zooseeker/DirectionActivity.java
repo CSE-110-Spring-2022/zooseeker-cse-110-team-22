@@ -40,17 +40,25 @@ public class DirectionActivity extends AppCompatActivity {
     TextView inp_lat;
     TextView inp_lng;
 
+    LocationModel locationModel;
+    ExhibitManager extMan;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_direction);
+
         createAlert();
         inp_lat = ((TextView) findViewById(R.id.latitude));
         inp_lng= ((TextView) findViewById(R.id.longitude));
+        locationModel = MainActivity.locationModel;
+        extMan = MainActivity.exhibitManager;
+
+
         direction_no = 0;
         ListView directions = (ListView) findViewById(R.id.directions);
         String current = PlanActivity.direction_list.get(direction_no);
-        Log.d("DIR_LIST_CURR", current);
+        Log.d("DIR_LIST_CURR", PlanActivity.direction_list.toString());
         //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
         dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
@@ -64,15 +72,15 @@ public class DirectionActivity extends AppCompatActivity {
                     if (checkOffTrack(location.getLatitude(), location.getLongitude())){
                         Log.d("Off Track", "User off track");
                     }
-
                 }
             };
             //Register Listner
-            MainActivity.locationModel.requestLocationUpdates(locationListner2);
+            locationModel.requestLocationUpdates(locationListner2);
         }
         else {
             Log.d("Mocking Location", String.format("Location mocked: %f %f", mockLat, mockLng));
             Log.d("Off track", String.valueOf(checkOffTrack(mockLat, mockLng)));
+            locationModel.setLastKnown(mockLat, mockLng);
         }
     }
 
@@ -82,7 +90,7 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -94,7 +102,7 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -129,14 +137,41 @@ public class DirectionActivity extends AppCompatActivity {
 
 
     public void mockNewLocation(View view){
+        if (inp_lat.getText().toString() == "" || inp_lng.getText().toString() == ""){
+            return;
+        }
         double textLat = Double.parseDouble(inp_lat.getText().toString());
         double textLng = Double.parseDouble(inp_lng.getText().toString());
         if (mockingEnabled){
             mockLat = textLat;
             mockLng = textLng;
+            locationModel.setLastKnown(mockLat, mockLng);
             Log.d("Mocking Location", String.format("Location mocked: %f %f", mockLat, mockLng));
         }
         checkOffTrack(mockLat, mockLng);
+    }
+
+    public void replanRoute(){
+        Log.d("Direction No. during replan", Integer.toString(direction_no));
+        List<String> replanList = PlanActivity.direction_list.subList(direction_no, PlanActivity.direction_list.size());
+        Log.d("ReplanList", replanList.toString());
+        List<String> orgList = PlanActivity.direction_list.subList(0, direction_no);
+        Log.d("orgList", orgList.toString());
+
+        List<String> newList = ZooGraph.getShortestPath(replanList,
+                extMan.getClosest(locationModel.getLat(), locationModel.getLng()));
+        Log.d("New List Replan1", newList.toString());
+
+        List<String> newPlan = new ArrayList<>();
+
+        newPlan.addAll(orgList);
+        newPlan.addAll(newList);
+        Log.d("PlanActivity Replan", PlanActivity.direction_list.toString());
+        Log.d("New List Replan", newPlan.toString());
+
+      PlanActivity.direction_list = newPlan;
+
+
     }
 
     public void createAlert(){
@@ -144,10 +179,10 @@ public class DirectionActivity extends AppCompatActivity {
                 .Builder(this);
 
         // Set the message show for the Alert time
-        builder.setMessage("Do you want to exit ?");
+        builder.setMessage("Do you want to Replan Route ?");
 
         // Set Alert Title
-        builder.setTitle("Alert !");
+        builder.setTitle("Alert ! You are Off Track");
 
         // Set Cancelable false
         // for when the user clicks on the outside
@@ -171,6 +206,7 @@ public class DirectionActivity extends AppCompatActivity {
 
                                 // When the user click yes button
                                 // then app will close
+                                replanRoute();
                                 dialog.cancel();
                             }
                         });

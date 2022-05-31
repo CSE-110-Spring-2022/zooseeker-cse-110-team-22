@@ -123,7 +123,7 @@ public class ZooGraph {
      * @param start
      * @return Directions with shortest path between exhibits
      */
-    public List<String> getShortestPath(List<String> vertexList, Exhibit start){
+    public static List<String> getShortestPath(List<String> vertexList, Exhibit start){
         List<String> copy = new ArrayList<>(vertexList);
         List<String> directions_list = new ArrayList<>();
         String start_str;
