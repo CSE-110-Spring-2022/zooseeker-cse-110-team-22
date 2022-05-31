@@ -66,7 +66,7 @@ public class ZooGraphUnitTest {
         String start = "entrance_exit_gate";
         String goal = "hippo";
         GraphPath<String, IdentifiedWeightedEdge> path = this.testG.getPath2(start, goal);
-        List<String> twoNodesDirection = this.testG.getDirectionsFromPath2(path);
+        List<String> twoNodesDirection = this.testG.getDetailedDirections(path);
         assertNotNull(path);
     }
 

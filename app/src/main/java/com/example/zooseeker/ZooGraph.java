@@ -1,21 +1,15 @@
 package com.example.zooseeker;
-
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Location;
-import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-public class ZooGraph {
+public class ZooGraph  {
     public Map<String, ZooData.VertexInfo> vInfo;
     public static Map<String, ZooData.EdgeInfo> eInfo;
     public static Graph<String, IdentifiedWeightedEdge> ZooG;
@@ -45,7 +39,7 @@ public class ZooGraph {
      *
      * @return List of directions
      */
-    public static List<String> getDirectionsFromPath2(GraphPath<String, IdentifiedWeightedEdge> path){
+    public static List<String> getDetailedDirections(GraphPath<String, IdentifiedWeightedEdge> path){
         List<String> directions = new ArrayList<>();
         List<String> nodes = path.getVertexList();
         for(int i=0;i<nodes.size()-1;i++) {
@@ -62,6 +56,51 @@ public class ZooGraph {
         directions.add(String.format("You have arrived at %s.\n", path.getEndVertex()));
         return directions;
     }
+
+    public static List<String> getBriefDirections(GraphPath<String, IdentifiedWeightedEdge> path){
+        List<String> directions = new ArrayList<>();
+        List<String> nodes = path.getVertexList();
+        float currWeight=0;
+        for(int i=0;i<nodes.size()-1;i++) {
+            String curr = nodes.get(i);
+            String next = nodes.get(i+1);
+            IdentifiedWeightedEdge e = ZooG.getEdge(curr, next);
+
+            if(i<nodes.size()-2) {
+                String nNext = nodes.get(i+2);
+                IdentifiedWeightedEdge nextE = ZooG.getEdge(next, nNext);
+                String street1 = eInfo.get(e.getId()).street;
+                String street2 = eInfo.get(nextE.getId()).street;
+                currWeight += ZooG.getEdgeWeight(e);
+
+                if(!street1.equals(street2)) {
+                    String direction = String.format("Walk %.0f meters along %s from %s to %s.\n",
+                            currWeight,
+                            street1,
+                            curr,
+                            next);
+                    directions.add(direction);
+                    currWeight = 0;
+                }
+
+            }
+
+            else {
+                String currStreet = eInfo.get(e.getId()).street;
+                currWeight += ZooG.getEdgeWeight(e);
+
+                String direction = String.format("Walk %.0f meters along %s from %s to %s.\n",
+                        currWeight,
+                        currStreet,
+                        curr,
+                        next);
+                directions.add(direction);
+                currWeight = 0;
+            }
+        }
+        directions.add(String.format("You have arrived at %s.\n", path.getEndVertex()));
+        return directions;
+    }
 //    public List<String> getExhibitOrders(GraphPath<String, IdentifiedWeightedEdge> path) {
 //        List<String> order = new ArrayList<>();
 //        List<String> nodes = path.getVertexList();
@@ -72,10 +111,19 @@ public class ZooGraph {
 //        return order;
 //    }
         //updated version of GetDirectionsFromPath2
-        public static List<String> getDirectionsToExhibit(double lat, double lng, String end){
+        public static List<String> getDirectionsToExhibit(double lat, double lng, String end, boolean b){
             var start = MainActivity.exhibitManager.getClosest(lat, lng).id;
             var cur_path = getPath2(start, end);
-            return getDirectionsFromPath2(cur_path);
+
+            if(b == true) {
+                System.err.println("hello");
+                return getDetailedDirections(cur_path);
+            }
+
+            else {
+                System.err.println("bob");
+                return getBriefDirections(cur_path);
+            }
         }
 
     /**
