@@ -1,19 +1,15 @@
 package com.example.zooseeker;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.location.Location;
 import android.util.Log;
 
 import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.DijkstraShortestPath;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ZooGraph {
     public Map<String, ZooData.VertexInfo> vInfo;
@@ -93,10 +89,10 @@ public class ZooGraph {
         return order;
     }
 
-    public List<String> getShortestPathOrder(List<String> exhibits) {
+    public List<String> getShortestPathOrder(List<String> exhibits, Exhibit start_ext) {
         List<String> copy = new ArrayList<>(exhibits);
         List<String> directions_list = new ArrayList<>();
-        String start = "entrance_exit_gate";
+        String start = start_ext.id;
         String curr_vertex = start;
         String next_vertex = null;
 
@@ -104,6 +100,7 @@ public class ZooGraph {
             double min_weight = Double.MAX_VALUE;
             GraphPath<String, IdentifiedWeightedEdge> path_leg = null;
             for (String s: copy){
+                Log.d("Animal", s);
                 GraphPath<String, IdentifiedWeightedEdge> curr_leg = getPath2(curr_vertex, s);
                 double curr_weight = curr_leg.getWeight();
                 if (curr_weight < min_weight){
@@ -112,23 +109,26 @@ public class ZooGraph {
                     path_leg = curr_leg;
                 }
             }
+            directions_list.add(next_vertex);
             curr_vertex = next_vertex;
             copy.remove(curr_vertex);
-            directions_list.addAll(getExhibitOrders(path_leg));
         }
+        Log.d("Directions List", directions_list.toString());
         return directions_list;
     }
 
     /**
      * Use this function to get optimal path given list of exhibits to visit
      * @param vertexList List of exhibits to visit
+     * @param start
      * @return Directions with shortest path between exhibits
      */
-    public List<String> getShortestPath(List<String> vertexList){
+    public List<String> getShortestPath(List<String> vertexList, Exhibit start){
         List<String> copy = new ArrayList<>(vertexList);
         List<String> directions_list = new ArrayList<>();
-        String start = "entrance_exit_gate";
-        String curr_vertex = start;
+        Log.d("getShortestPath start", start.name);
+        String start_str = start.id;
+        String curr_vertex = start_str;
         String next_vertex = null;
 
         while (! copy.isEmpty()){
