@@ -115,6 +115,21 @@ public class DirectionActivity extends AppCompatActivity {
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
+        else if (direction_no == PlanActivity.direction_list.size() - 1){
+            direction_no += 1;
+
+            //changes direction that we're on accordingly
+            SharedPreferences settings = getPreferences(0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("directionNum", direction_no);
+            editor.commit();
+
+            ListView directions = (ListView) findViewById(R.id.directions);
+            //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate");
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
+            directions.setAdapter(myAdapter);
+        }
     }
 
     public void getPrevious(View view){
@@ -137,6 +152,9 @@ public class DirectionActivity extends AppCompatActivity {
     }
 
     public boolean checkOffTrack(double lat, double lng){
+        if (direction_no == PlanActivity.direction_list.size()){
+            return false;
+        }
         ExhibitManager exhibitManager = MainActivity.exhibitManager;
         List<String> subList = PlanActivity.direction_list.subList(direction_no + 1, PlanActivity.direction_list.size());
         if (subList.isEmpty()){
