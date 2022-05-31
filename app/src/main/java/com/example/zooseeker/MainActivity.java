@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -92,10 +93,30 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             throw new RuntimeException("Unable to load data");
         }
-
         //loading exhibits
-        exhibitManager = new ExhibitManager(exhibitsReader, mylist);
+        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
+
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        ExhibitDao dao = zooNodes.exhibitsDao();
+
+        //to edit later in persisting saved trail
+        //TrailDao tdao = zooNodes.trailsDao();
+        List<Exhibit> planListLoader = dao.getAll();
+
+        Reader exhibitsReader2 = null;
+        try {
+            exhibitsReader2 = new InputStreamReader(this.getAssets().open("exhibit_info.json"));
+        } catch (IOException e) {
+            throw new RuntimeException("Unable to load data");
+        }
+        exhibitManager = new ExhibitManager(exhibitsReader2, mylist);
         planList = new ArrayList<>();
+
+        //Get list of exhibits from dao
+        for(int i = 0; i < planListLoader.size(); i++){
+            planList.add(planListLoader.get(i).name);
+        }
+        counter.setText("Exhibits to Visit: " + planList.size());
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
         myAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, planList);
@@ -114,6 +135,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     planList.add(animal);
+                    // O(n) add to saved database, can prob use something else
+                    for(int i = 0; i < exhibits.size(); i++){
+                        if(exhibits.get(i).name.equals(animal)){
+                            dao.insertSingle(exhibits.get(i));
+                        }
+                    }
                     counter.setText("Exhibits to Visit: " + planList.size());
                     Toast.makeText(MainActivity.this, "Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                     myAdapter2.notifyDataSetChanged();

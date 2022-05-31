@@ -19,7 +19,6 @@ public class ExhibitManager {
     public ExhibitManager(Reader exhibitsReader) {
         List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
 
-
         for(int i = 0; i < exhibits.size(); i++){
             //only attain exhibits
             nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));

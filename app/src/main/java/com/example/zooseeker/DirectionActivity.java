@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
@@ -48,6 +49,19 @@ public class DirectionActivity extends AppCompatActivity {
         inp_lat = ((TextView) findViewById(R.id.latitude));
         inp_lng= ((TextView) findViewById(R.id.longitude));
         direction_no = 0;
+
+        //https://developer.android.com/reference/android/content/SharedPreferences
+
+        //saves directionNum into sharedPref, store for later use
+        SharedPreferences settings = getPreferences(0);
+        if(settings.getInt("directionNum", -1) == -1) {
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("directionNum", 0);
+            editor.commit();
+        } else {
+            direction_no = settings.getInt("directionNum", 0);
+        }
+
         ListView directions = (ListView) findViewById(R.id.directions);
         String current = PlanActivity.direction_list.get(direction_no);
         Log.d("DIR_LIST_CURR", current);
@@ -79,6 +93,13 @@ public class DirectionActivity extends AppCompatActivity {
     public void getNext(View view){
         if (direction_no < PlanActivity.direction_list.size() - 1){
             direction_no += 1;
+
+            //changes direction that we're on accordingly
+            SharedPreferences settings = getPreferences(0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("directionNum", direction_no);
+            editor.commit();
+
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
@@ -91,6 +112,13 @@ public class DirectionActivity extends AppCompatActivity {
     public void getPrevious(View view){
         if (direction_no > 0){
             direction_no -= 1;
+
+            //changes direction that we're on accordingly
+            SharedPreferences settings = getPreferences(0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("directionNum", direction_no);
+            editor.commit();
+
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
