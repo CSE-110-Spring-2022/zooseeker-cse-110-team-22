@@ -12,6 +12,8 @@ import androidx.activity.ComponentActivity;
 public class LocationModel {
     String provider;
     LocationManager locationManager;
+    double last_known_lat;
+    double last_known_lng;
 
     public LocationModel(ComponentActivity activity){
         provider = LocationManager.GPS_PROVIDER;
@@ -23,5 +25,17 @@ public class LocationModel {
         locationManager.requestLocationUpdates(provider, 0, 0f, ll);
     };
 
+    public void setLastKnown(double lat, double lng){
+        last_known_lat = lat;
+        last_known_lng = lng;
+    }
+
+    public double getLat(){
+        return last_known_lat;
+    }
+
+    public double getLng(){
+        return  last_known_lng;
+    }
 
 }

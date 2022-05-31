@@ -30,7 +30,7 @@ public class DirectionActivity extends AppCompatActivity {
         ListView directions = (ListView) findViewById(R.id.directions);
         String current = PlanActivity.direction_list.get(direction_no);
         //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-        dlist = ZooGraph.getDirectionsToExhibit(32.8801, -117.2340, current);
+        dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
         directions.setAdapter(myAdapter);
     }
@@ -41,7 +41,7 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(32.8801, -117.2340, current);
+            dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -53,7 +53,7 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(32.8801, -117.2340, current);
+            dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
