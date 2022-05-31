@@ -78,7 +78,7 @@ public class ZooGraphUnitTest {
         animal_list.add("gorilla");
         animal_list.add("capuchin");
 
-        List<String> output = this.testG.getShortestPath(animal_list, );
+        List<String> output = this.testG.getShortestPath(animal_list,null);
         Log.d("out1", output.get(0));
         assertNotNull(output);
     }

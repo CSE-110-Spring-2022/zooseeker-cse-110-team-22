@@ -126,8 +126,14 @@ public class ZooGraph {
     public List<String> getShortestPath(List<String> vertexList, Exhibit start){
         List<String> copy = new ArrayList<>(vertexList);
         List<String> directions_list = new ArrayList<>();
-        Log.d("getShortestPath start", start.name);
-        String start_str = start.id;
+        String start_str;
+
+        if (start == null){
+            start_str = "entrance_exit_gate";
+        }else {
+            Log.d("getShortestPath start", start.name);
+            start_str = start.id;
+        }
         String curr_vertex = start_str;
         String next_vertex = null;
 
