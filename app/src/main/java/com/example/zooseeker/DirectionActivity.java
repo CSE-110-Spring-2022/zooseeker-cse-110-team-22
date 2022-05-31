@@ -197,6 +197,7 @@ public class DirectionActivity extends AppCompatActivity {
         Log.d("PlanActivity Replan", PlanActivity.direction_list.toString());
         Log.d("New List Replan", newPlan.toString());
 
+      dlist = newPlan;
       PlanActivity.direction_list = newPlan;
 
 
