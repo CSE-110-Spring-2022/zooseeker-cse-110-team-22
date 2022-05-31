@@ -42,7 +42,7 @@ public class PlanActivity extends AppCompatActivity {
         Log.i("id_list", id_list.toString());
 
         // Get list of directions
-        direction_list = zGraph.getShortestPath(id_list);
+        direction_list = zGraph.getShortestPath(id_list,MainActivity.exhibitManager.getClosest(MainActivity.locationModel.getLat(),MainActivity.locationModel.getLng() ) );
         Log.i("list", direction_list.toString());
 
         // get current location
@@ -52,7 +52,7 @@ public class PlanActivity extends AppCompatActivity {
         Log.d("curr_lng", String.valueOf(curr_lng));
 
         // get order of exhibits
-        route_plan_summary = zGraph.getShortestPathOrder(id_list);
+        route_plan_summary = zGraph.getShortestPathOrder(id_list,MainActivity.exhibitManager.getClosest(MainActivity.locationModel.getLat(),MainActivity.locationModel.getLng() ) );
         List<String> exhibits = new ArrayList<String>();
         for (int i = 0; i < route_plan_summary.size(); i++) {
             String s = route_plan_summary.get(i);

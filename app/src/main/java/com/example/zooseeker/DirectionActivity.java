@@ -28,12 +28,12 @@ public class DirectionActivity extends AppCompatActivity {
     public static List<String> dlist;
 
     public boolean mockingEnabled = true;
-//    //Gorilla Coordinates
-//    public double mockLat = 32.74711745394194;
-//    public double mockLng = -117.18047982358976;
-    // Koi Coordinates
-    public double mockLat = 32.72109826903826;
-    public double mockLng = -117.15952052282296;
+    //Gorilla Coordinates
+    public double mockLat = 32.74711745394194;
+    public double mockLng = -117.18047982358976;
+//    // Koi Coordinates
+//    public double mockLat = 32.72109826903826;
+//    public double mockLng = -117.15952052282296;
 
     public AlertDialog alertDialog;
 
@@ -63,7 +63,6 @@ public class DirectionActivity extends AppCompatActivity {
                     Log.d("Direction Location Changed", String.format("Location changed: %s", location));
                     if (checkOffTrack(location.getLatitude(), location.getLongitude())){
                         Log.d("Off Track", "User off track");
-                        alertDialog.show();
                     }
 
                 }
@@ -74,9 +73,6 @@ public class DirectionActivity extends AppCompatActivity {
         else {
             Log.d("Mocking Location", String.format("Location mocked: %f %f", mockLat, mockLng));
             Log.d("Off track", String.valueOf(checkOffTrack(mockLat, mockLng)));
-            if (checkOffTrack(mockLat, mockLng)){
-                alertDialog.show();
-            }
         }
     }
 
@@ -124,6 +120,7 @@ public class DirectionActivity extends AppCompatActivity {
             var distance = exhibitManager.getDistanceBetween(ext, lat, lng);
             if (distance < curr_distance){
                 Log.d("Closer Exhibit", ext.name);
+                alertDialog.show();
                 return true;
             }
         }
@@ -137,10 +134,9 @@ public class DirectionActivity extends AppCompatActivity {
         if (mockingEnabled){
             mockLat = textLat;
             mockLng = textLng;
+            Log.d("Mocking Location", String.format("Location mocked: %f %f", mockLat, mockLng));
         }
-        if (checkOffTrack(mockLat, mockLng)){
-            alertDialog.show();
-        }
+        checkOffTrack(mockLat, mockLng);
     }
 
     public void createAlert(){
