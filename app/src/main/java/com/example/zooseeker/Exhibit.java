@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
@@ -69,7 +70,7 @@ public class Exhibit {
     @NonNull
     public final String name;
 
-    //use converters later
+    @TypeConverters({Converters.class})
     @ColumnInfo(name = "tags")
     @SerializedName("tags")
     @NonNull

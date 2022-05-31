@@ -88,7 +88,23 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        ExhibitDao dao = zooNodes.exhibitsDao();
+
+        //to edit later in persisting saved trail
+        TrailDao tdao = zooNodes.trailsDao();
+
+        List<Exhibit> planListLoader = dao.getAll();
+
         planList = new ArrayList<>();
+
+        //Get list of exhibits from dao
+        for(int i = 0; i < planListLoader.size(); i++){
+            planList.add(planListLoader.get(i).name);
+        }
+        counter.setText("Exhibits to Visit: " + planList.size());
         // Initialize adapters
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, mylist);
         myAdapter2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, planList);
@@ -107,6 +123,12 @@ public class MainActivity extends AppCompatActivity {
                 }
                 else {
                     planList.add(animal);
+                    // O(n) add to saved database, can prob use something else
+                    for(int i = 0; i < exhibits.size(); i++){
+                        if(exhibits.get(i).name.equals(animal)){
+                            dao.insertSingle(exhibits.get(i));
+                        }
+                    }
                     counter.setText("Exhibits to Visit: " + planList.size());
                     Toast.makeText(MainActivity.this, "Added " + ((TextView) view).getText(), Toast.LENGTH_SHORT).show();
                     myAdapter2.notifyDataSetChanged();
