@@ -79,6 +79,47 @@ public class ZooGraph {
         }
 
     /**
+     * Gets the order of the exhibits you need to visit.
+     * @param path - the graph containing the path
+     * @return simple List with the order the exhibits should be visited in
+     */
+    public List<String> getExhibitOrders(GraphPath<String, IdentifiedWeightedEdge> path) {
+        List<String> order = new ArrayList<>();
+        List<String> nodes = path.getVertexList();
+        for(int i=0;i<nodes.size()-1;i++) {
+            String next = nodes.get(i+1);
+            order.add(next);
+        }
+        return order;
+    }
+
+    public List<String> getShortestPathOrder(List<String> exhibits) {
+        List<String> copy = new ArrayList<>(exhibits);
+        List<String> directions_list = new ArrayList<>();
+        String start = "entrance_exit_gate";
+        String curr_vertex = start;
+        String next_vertex = null;
+
+        while (! copy.isEmpty()){
+            double min_weight = Double.MAX_VALUE;
+            GraphPath<String, IdentifiedWeightedEdge> path_leg = null;
+            for (String s: copy){
+                GraphPath<String, IdentifiedWeightedEdge> curr_leg = getPath2(curr_vertex, s);
+                double curr_weight = curr_leg.getWeight();
+                if (curr_weight < min_weight){
+                    next_vertex = s;
+                    min_weight = curr_weight;
+                    path_leg = curr_leg;
+                }
+            }
+            curr_vertex = next_vertex;
+            copy.remove(curr_vertex);
+            directions_list.addAll(getExhibitOrders(path_leg));
+        }
+        return directions_list;
+    }
+
+    /**
      * Use this function to get optimal path given list of exhibits to visit
      * @param vertexList List of exhibits to visit
      * @return Directions with shortest path between exhibits
@@ -109,5 +150,4 @@ public class ZooGraph {
         }
         return directions_list;
     }
-
 }
