@@ -17,11 +17,10 @@ import java.io.Reader;
 import java.util.List;
 import java.util.concurrent.Executors;
 
-import com.example.zooseeker.Trail;
 import com.example.zooseeker.Exhibit;
 
 //to be edited w/ trail and exhibit
-@Database(entities = {Exhibit.class, Trail.class}, version = 1)
+@Database(entities = Exhibit.class, version = 1, exportSchema = false)
 @TypeConverters({ZooDatabase.Converters.class})
 public abstract class ZooDatabase extends RoomDatabase {
     private static ZooDatabase singleton = null;
@@ -29,8 +28,20 @@ public abstract class ZooDatabase extends RoomDatabase {
     private static boolean shouldForcePopulate = false;
 
     public abstract ExhibitDao exhibitsDao();
-    public abstract TrailDao trailsDao();
 
+    private static Integer directionNum = 0;
+
+    public static void incrementDirectionNum(){
+        directionNum++;
+    }
+
+    public static int getDirectionNum(){
+        return directionNum;
+    }
+
+    public static void resetDirections(){
+        directionNum = 0;
+    }
     /**
      * Use method to get singleton from database class
      * @param context Current state of application
@@ -49,28 +60,6 @@ public abstract class ZooDatabase extends RoomDatabase {
      * @return database of zoo exhibits
      */
     private static ZooDatabase makeDatabase(Context context){
-        /*
-        return Room.databaseBuilder(context, ZooDatabase.class, "zoo_app.db")
-                .allowMainThreadQueries().addCallback(new Callback() {
-                    @Override
-                    public void onCreate(@NonNull SupportSQLiteDatabase db) {
-                        super.onCreate(db);
-                        Executors.newSingleThreadScheduledExecutor().execute(() -> {
-                            Reader inputReader = null;
-                            try {
-                                inputReader = new InputStreamReader(context.getAssets().open("exhibit_info.json"));
-                            } catch (IOException e) {
-                                throw new RuntimeException("Unable to load data");
-                            }
-                            List<Exhibit> zooEx = Exhibit
-                                    .fromJson(inputReader);
-                            getSingleton(context).exhibitsDao().insert(zooEx);
-                        });
-                    }
-                })
-                .build();
-
-         */
         return Room
                 .databaseBuilder(context, ZooDatabase.class, "zoo_app.db")
                 .allowMainThreadQueries()
@@ -102,8 +91,7 @@ public abstract class ZooDatabase extends RoomDatabase {
     }
 
     private static boolean isPopulated() {
-        return singleton.exhibitsDao().count() > 0
-                && singleton.trailsDao().count() > 0;
+        return singleton.exhibitsDao().count() > 0;
     }
 
     public static void setForcePopulate() {
@@ -116,33 +104,6 @@ public abstract class ZooDatabase extends RoomDatabase {
             singleton.close();
         }
         singleton = testDatabase;
-    }
-
-    public static void populate(Context context, ZooDatabase instance) {
-        Reader exhibitsReader = null;
-        Reader trailsReader = null;
-        try {
-            exhibitsReader = new InputStreamReader(context.getAssets().open("exhibit_info.json"));
-            trailsReader = new InputStreamReader(context.getAssets().open("trail_info.json"));
-        } catch (IOException e) {
-            throw new RuntimeException("Unable to load data for prepopulation!");
-        }
-        populate(context, instance, exhibitsReader, trailsReader);
-    }
-
-    @VisibleForTesting
-    public static void populate(Context context, ZooDatabase instance, Reader exhibitsReader, Reader trailsReader) {
-        Log.i(ZooDatabase.class.getCanonicalName(), "Populating database from assets...");
-
-        // Clear all of the tables
-        instance.clearAllTables();
-        shouldForcePopulate = false;
-
-        var exhibits = Exhibit.fromJson(exhibitsReader);
-        instance.exhibitsDao().insert(exhibits);
-
-        var trails = Trail.fromJson(trailsReader);
-        instance.trailsDao().insert(trails);
     }
 
     public static class Converters {

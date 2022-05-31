@@ -7,19 +7,11 @@
         <deviceKey>
           <Key>
             <type value="VIRTUAL_DEVICE_PATH" />
-<<<<<<< HEAD
             <value value="C:\Users\jwu51\.android\avd\Pixel_3a_API_28.avd" />
-=======
-            <value value="C:\Users\shush\.android\avd\Pixel_3a_API_30.avd" />
->>>>>>> dfe8b2bff3f555ebd13fa7cf1d8445e97d7fd3da
           </Key>
         </deviceKey>
       </Target>
     </targetSelectedWithDropDown>
-<<<<<<< HEAD
-    <timeTargetWasSelectedWithDropDown value="2022-05-07T23:07:53.931670700Z" />
-=======
-    <timeTargetWasSelectedWithDropDown value="2022-05-07T23:09:19.586181400Z" />
->>>>>>> dfe8b2bff3f555ebd13fa7cf1d8445e97d7fd3da
+    <timeTargetWasSelectedWithDropDown value="2022-05-31T07:03:19.763693700Z" />
   </component>
 </project>

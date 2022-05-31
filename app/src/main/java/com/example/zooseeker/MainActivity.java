@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         ExhibitDao dao = zooNodes.exhibitsDao();
 
         //to edit later in persisting saved trail
-        TrailDao tdao = zooNodes.trailsDao();
+        //TrailDao tdao = zooNodes.trailsDao();
 
         List<Exhibit> planListLoader = dao.getAll();
 

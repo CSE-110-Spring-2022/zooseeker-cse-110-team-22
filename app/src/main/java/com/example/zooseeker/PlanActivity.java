@@ -33,6 +33,11 @@ public class PlanActivity extends AppCompatActivity {
 
         //Get list of directions
         direction_list = zGraph.getShortestPath(id_list);
+
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        //TrailDao tDao = zooNodes.trailsDao();
+        //to do with getting id and street
+
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, direction_list);
         listPlan.setAdapter(myAdapter);
     }
