@@ -112,6 +112,34 @@ public class MainActivity extends AppCompatActivity {
         exhibitManager = new ExhibitManager(exhibitsReader2, mylist);
         planList = new ArrayList<>();
 
+        /* Permissions Setup */
+        while (true){
+            if (! permissionChecker.ensurePermissions()){
+                break;
+            }
+        };
+
+        locationModel = new LocationModel(this);
+        if (! mockingEnabled)
+        {
+            var locationListner = new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    current = location;
+                    Log.d("LAB7", String.format("Location changed: %s", location));
+                    loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
+                    locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
+
+                }
+            };
+            locationModel.requestLocationUpdates(locationListner);
+        }
+        else{
+            Log.d("Mocking Enabled", "Mocking Enabled");
+            locationModel.setLastKnown(mockLat, mockLng);
+            loc.setText(exhibitManager.getClosest(mockLat, mockLng).name);
+        }
+
         //Get list of exhibits from dao
         for(int i = 0; i < planListLoader.size(); i++){
             planList.add(planListLoader.get(i).name);
@@ -147,29 +175,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        /* Permissions Setup */
-        if (permissionChecker.ensurePermissions()) return;
 
-        locationModel = new LocationModel(this);
-        if (! mockingEnabled)
-        {
-            var locationListner = new LocationListener() {
-                @Override
-                public void onLocationChanged(@NonNull Location location) {
-                    current = location;
-                    Log.d("LAB7", String.format("Location changed: %s", location));
-                    loc.setText(exhibitManager.getClosest(location.getLatitude(), location.getLongitude()).name);
-                    locationModel.setLastKnown(location.getLatitude(), location.getLongitude());
-
-                }
-            };
-            locationModel.requestLocationUpdates(locationListner);
-        }
-        else{
-            Log.d("Mocking Enabled", "Mocking Enabled");
-            locationModel.setLastKnown(mockLat, mockLng);
-            loc.setText(exhibitManager.getClosest(mockLat, mockLng).name);
-        }
     }
 
 
