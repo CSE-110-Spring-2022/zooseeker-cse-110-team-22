@@ -78,20 +78,4 @@ public class ZooDatabaseTest {
         });
         //assertEquals(1, 1);
     }
-
-    //testing if directionNum is properly updated
-    @Test
-    public void testUpdatingDirectionNum(){
-        ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
-
-        scenario.onActivity(activity -> {
-            ZooDatabase db = Room.inMemoryDatabaseBuilder(activity, ZooDatabase.class)
-                    .allowMainThreadQueries()
-                    .build();
-            db.incrementDirectionNum();
-            db.incrementDirectionNum();
-            assertEquals(2, db.getDirectionNum());
-            db.close();
-        });
-    }
 }

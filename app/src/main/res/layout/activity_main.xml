@@ -25,10 +25,24 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"/>
 
+        <Button
+            android:id="@+id/deletePlan"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Saved Plan"
+            android:onClick="deleteSavedPlan"/>
+
+        <Button
+            android:id="@+id/deleteExhibits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Saved Exhibits"
+            android:onClick="deleteSavedExhibits"/>
+
         <TextView
             android:id="@+id/numberCount"
-            android:layout_width="391dp"
-            android:layout_height="wrap_content"
+            android:layout_width="398dp"
+            android:layout_height="95dp"
             android:gravity="center"
             android:text="Exhibits to Visit: 0"
             android:textSize="20sp" />
