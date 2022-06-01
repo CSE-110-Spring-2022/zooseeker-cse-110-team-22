@@ -2,8 +2,10 @@ package com.example.zooseeker;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -243,5 +245,22 @@ public class MainActivity extends AppCompatActivity {
     public void openPlan(View view){
         Intent intent = new Intent(this, PlanActivity.class);
         startActivity(intent);
+    }
+
+    public void deleteSavedPlan(View view){
+        //for deleting plan
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("directionNum", 0);
+        editor.commit();
+        recreate();
+    }
+
+    public void deleteSavedExhibits(View view){
+        //for deleting saved exhibits
+        ZooDatabase zooNodes = ZooDatabase.getSingleton(this);
+        ExhibitDao dao = zooNodes.exhibitsDao();
+        dao.deleteAll();
+        recreate();
     }
 }

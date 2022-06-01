@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -61,7 +62,7 @@ public class DirectionActivity extends AppCompatActivity {
         //https://developer.android.com/reference/android/content/SharedPreferences
 
         //saves directionNum into sharedPref, store for later use
-        SharedPreferences settings = getPreferences(0);
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         if(settings.getInt("directionNum", -1) == -1) {
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("directionNum", 0);
@@ -104,7 +105,7 @@ public class DirectionActivity extends AppCompatActivity {
             direction_no += 1;
 
             //changes direction that we're on accordingly
-            SharedPreferences settings = getPreferences(0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("directionNum", direction_no);
             editor.commit();
@@ -121,7 +122,7 @@ public class DirectionActivity extends AppCompatActivity {
             direction_no += 1;
 
             //changes direction that we're on accordingly
-            SharedPreferences settings = getPreferences(0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("directionNum", direction_no);
             editor.commit();
@@ -138,7 +139,7 @@ public class DirectionActivity extends AppCompatActivity {
             direction_no -= 1;
 
             //changes direction that we're on accordingly
-            SharedPreferences settings = getPreferences(0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("directionNum", direction_no);
             editor.commit();
@@ -219,7 +220,7 @@ public class DirectionActivity extends AppCompatActivity {
         else if (direction_no == PlanActivity.direction_list.size() - 1){
 
             //changes direction that we're on accordingly
-            SharedPreferences settings = getPreferences(0);
+            SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor editor = settings.edit();
             editor.putInt("directionNum", direction_no);
             editor.commit();
@@ -252,6 +253,12 @@ public class DirectionActivity extends AppCompatActivity {
 
         dlist = newPlan;
         PlanActivity.direction_list = newPlan;
+
+        //reset directionNum
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("directionNum", 0);
+        editor.commit();
 
         ListView directions = (ListView) findViewById(R.id.directions);
         String current = PlanActivity.direction_list.get(direction_no);
