@@ -125,7 +125,6 @@ public class DirectionActivity extends AppCompatActivity {
             editor.commit();
 
             ListView directions = (ListView) findViewById(R.id.directions);
-            //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
             dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate");
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
@@ -196,6 +195,39 @@ public class DirectionActivity extends AppCompatActivity {
         }
         checkOffTrack(mockLat, mockLng);
     }
+    public void skip(View view){
+        if(direction_no + 1 < PlanActivity.direction_list.size()){
+            List<String> replanList = PlanActivity.direction_list.subList(direction_no + 1, PlanActivity.direction_list.size());
+            List<String> orgList = PlanActivity.direction_list.subList(0, direction_no);
+            List<String> newList = ZooGraph.getShortestPath(replanList,
+                    extMan.getClosest(locationModel.getLat(), locationModel.getLng()));
+            List<String> newPlan = new ArrayList<>();
+            newPlan.addAll(orgList);
+            newPlan.addAll(newList);
+            dlist = newPlan;
+            PlanActivity.direction_list = newPlan;
+
+            ListView directions = (ListView) findViewById(R.id.directions);
+            String current = PlanActivity.direction_list.get(direction_no);
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
+            directions.setAdapter(myAdapter);
+        }
+        else if (direction_no == PlanActivity.direction_list.size() - 1){
+
+            //changes direction that we're on accordingly
+            SharedPreferences settings = getPreferences(0);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("directionNum", direction_no);
+            editor.commit();
+            List<String> newPlan = PlanActivity.direction_list.subList(0, direction_no);
+            PlanActivity.direction_list = newPlan;
+            ListView directions = (ListView) findViewById(R.id.directions);
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate");
+            myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
+            directions.setAdapter(myAdapter);
+        }
+    }
 
     public void replanRoute(){
         Log.d("Direction No. during replan", Integer.toString(direction_no));
@@ -215,11 +247,17 @@ public class DirectionActivity extends AppCompatActivity {
         Log.d("PlanActivity Replan", PlanActivity.direction_list.toString());
         Log.d("New List Replan", newPlan.toString());
 
-      dlist = newPlan;
-      PlanActivity.direction_list = newPlan;
+        dlist = newPlan;
+        PlanActivity.direction_list = newPlan;
 
+        ListView directions = (ListView) findViewById(R.id.directions);
+        String current = PlanActivity.direction_list.get(direction_no);
+        dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+        myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
+        directions.setAdapter(myAdapter);
 
     }
+
 
     public void createAlert(){
         AlertDialog.Builder builder = new AlertDialog
