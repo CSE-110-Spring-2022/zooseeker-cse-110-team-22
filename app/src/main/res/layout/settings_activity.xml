@@ -9,11 +9,10 @@
 
         <Switch
             android:id="@+id/settings_switch"
-            android:layout_width="379dp"
-            android:layout_height="78dp"
+            android:layout_width="391dp"
+            android:layout_height="84dp"
             android:onClick="onLaunchSettingsClicked"
-            android:text="          Enable Detailed Directions" />
+            android:text="                Enable Detailed Directions" />
 
     </FrameLayout>
-
 </LinearLayout>

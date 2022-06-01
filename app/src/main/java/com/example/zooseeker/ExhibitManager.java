@@ -1,16 +1,30 @@
 package com.example.zooseeker;
 
-import android.location.Location;
+import android.util.Log;
+import android.util.Pair;
 
 import java.io.Reader;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/* Stores and gets information relevant to all exhibits*/
+/* Stores and gets information relevant to exhibits*/
 public class ExhibitManager {
 
     //Mapping names to node ids for graph algorithm
-    public static Map<String, Exhibit> nameToExhibit;
+    public static Map<String, Exhibit> nameToExhibit = new HashMap<>();
+    public static Map<String, Exhibit> idToExhibit = new HashMap<>();
+
+
+    public ExhibitManager(Reader exhibitsReader) {
+        List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
+
+        for(int i = 0; i < exhibits.size(); i++){
+            //only attain exhibits
+            nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));
+            idToExhibit.put(exhibits.get(i).id, exhibits.get(i));
+        }
+    }
 
     public ExhibitManager(Reader exhibitsReader, List mylist) {
         List<Exhibit> exhibits = Exhibit.fromJson(exhibitsReader);
@@ -21,6 +35,7 @@ public class ExhibitManager {
                 mylist.add(exhibits.get(i).name);
             }
             nameToExhibit.put(exhibits.get(i).name, exhibits.get(i));
+            idToExhibit.put(exhibits.get(i).id, exhibits.get(i));
         }
     }
 
@@ -43,10 +58,29 @@ public class ExhibitManager {
 
                 if (curr_dist < smallest_dist){
                     closest_exhibit = exhibit;
+                    smallest_dist = curr_dist;
+//                    Log.d("Closest", String.format("exhibit: %s dist: %f", exhibit.name, curr_dist));
                 }
             }
 
         }
         return  closest_exhibit;
+    }
+
+    Pair<Double, Double> getCords(Exhibit ext){
+        if (! ext.hasGroup()){
+            return new Pair<>(ext.lat, ext.lng);
+        }
+        Exhibit groupExt = idToExhibit.get(ext.groupId);
+        return new Pair<>(groupExt.lat, groupExt.lng);
+    }
+
+    double getDistanceBetween(Exhibit ext, double curr_lat, double curr_lng){
+        var extCords = getCords(ext);
+        var dLat = extCords.first - curr_lat;
+        var dLng = extCords.second - curr_lng;
+
+        return Math.sqrt(Math.pow(dLat, 2) + Math.pow(dLng, 2));
+
     }
 }
