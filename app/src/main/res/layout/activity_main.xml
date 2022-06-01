@@ -27,17 +27,32 @@
 
         <TextView
             android:id="@+id/numberCount"
-            android:layout_width="391dp"
+            android:layout_width="392dp"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="Exhibits to Visit: 0"
             android:textSize="20sp" />
 
+        <Button
+            android:id="@+id/deleteExhibits"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Saved Exhibits"
+            android:onClick="deleteSavedExhibits"/>
+
+        <Button
+            android:id="@+id/deletePlan"
+            android:layout_width="398dp"
+            android:layout_height="48dp"
+            android:text="Delete Saved Plan"
+            android:onClick="deleteSavedPlan" />
+
         <ListView
             android:id="@+id/listView2"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1">
+        </ListView>
 
         <Button
             android:id="@+id/button"
