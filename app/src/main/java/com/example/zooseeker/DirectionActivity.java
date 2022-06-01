@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,7 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 
 public class DirectionActivity extends AppCompatActivity {
     int direction_no;
-    ListView directions;
+
     private ArrayAdapter<String> myAdapter;
 
     public static List<String> dlist;
@@ -74,7 +74,8 @@ public class DirectionActivity extends AppCompatActivity {
         String current = PlanActivity.direction_list.get(direction_no);
         Log.d("DIR_LIST_CURR", PlanActivity.direction_list.toString());
         //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-        dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current);
+
+        dlist = ZooGraph.getDirectionsToExhibit(MainActivity.locationModel.getLat(), MainActivity.locationModel.getLng(), current, SettingsActivity.checked);
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
         directions.setAdapter(myAdapter);
 
@@ -111,7 +112,8 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current, SettingsActivity.checked);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -125,7 +127,7 @@ public class DirectionActivity extends AppCompatActivity {
             editor.commit();
 
             ListView directions = (ListView) findViewById(R.id.directions);
-            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate");
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate", SettingsActivity.checked);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -144,7 +146,8 @@ public class DirectionActivity extends AppCompatActivity {
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
             //I HARD CODED THIS I HAVE NO IDEA HOW TO GET CURRENT DIRECTIONS lat n lng are zoo starts
-            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current, SettingsActivity.checked);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -209,7 +212,7 @@ public class DirectionActivity extends AppCompatActivity {
 
             ListView directions = (ListView) findViewById(R.id.directions);
             String current = PlanActivity.direction_list.get(direction_no);
-            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current, SettingsActivity.checked);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -223,7 +226,7 @@ public class DirectionActivity extends AppCompatActivity {
             List<String> newPlan = PlanActivity.direction_list.subList(0, direction_no);
             PlanActivity.direction_list = newPlan;
             ListView directions = (ListView) findViewById(R.id.directions);
-            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate");
+            dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), "entrance_exit_gate", SettingsActivity.checked);
             myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
             directions.setAdapter(myAdapter);
         }
@@ -252,7 +255,7 @@ public class DirectionActivity extends AppCompatActivity {
 
         ListView directions = (ListView) findViewById(R.id.directions);
         String current = PlanActivity.direction_list.get(direction_no);
-        dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current);
+        dlist = ZooGraph.getDirectionsToExhibit(locationModel.getLat(), locationModel.getLng(), current, SettingsActivity.checked);
         myAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dlist);
         directions.setAdapter(myAdapter);
 
